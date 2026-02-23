@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<link rel="stylesheet" type="text/css"
+	th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}" />
+<script src="https://code.jquery.com/jquery-3.4.1.min.js">
+	
+</script>
+<meta charset="ISO-8859-1">
+<title>Movie Application - Login</title>
+
+<script>
+// initialize jquery on load of this html page
+	$(document).ready(function() {
+		// when save button on this page is clicked, execute the below code
+		$("#saveMovieBtn").click(function() {
+			// get values of each text field in the form
+			var movieName = $("#movieName").val();
+			var movieCategory = $("#category").val();
+			var movieDescription = $("#description").val();
+			var movieStudio = $("#studio").val();
+			var movieImage = $("#image").val();
+			var moviePrice = $("#price").val();
+
+			// prepare a JSON object to send it to the API 
+			var data = {
+				"name" : movieName,
+				"category" : movieCategory,
+				"description" : movieDescription,
+				"studioId" : movieStudio,
+				"image" : movieImage,
+				"price" : moviePrice
+			};
+
+			// make an ajax POST request, this will send data to the backend POST API in movieController
+			$.ajax({
+				type : "POST",
+				url : "/api/movies",
+				contentType : "application/json",
+				data : JSON.stringify(data),
+				success : function() {
+					// show success alert
+					alert('movie saved successfully');
+				},
+				error : function(err) {
+					// show error alert
+					alert('error occurred ' + JSON.stringify(err));
+				}
+			});
+		});
+	});
+</script>
+
+</head>
+<body>
+	<div class="container">
+		<h1>Add a new movie</h1>
+		<div>
+			<div class="form-group">
+				<label for="movieName">Movie Name</label> <input type="text"
+					class="form-control" id="movieName" required>
+			</div>
+			<div class="form-group">
+				<label for="category">Category</label> <input type="text"
+					class="form-control" id="category" required>
+			</div>
+			<div class="form-group">
+				<label for="description">Description</label> <input type="text"
+					class="form-control" id="description">
+			</div>
+			<div class="form-group">
+				<label for="studio">Studio</label> <input type="text"
+					class="form-control" id="studio">
+			</div>
+			<div class="form-group">
+				<label for="image">Image</label> <input type="text"
+					class="form-control" id="image">
+			</div>
+			<div class="form-group">
+				<label for="price">Price</label> <input type="text"
+					class="form-control" id="price" required>
+			</div>
+			<a id="backBtn" class="btn btn-default" href="/movie-list">Back</a>
+			<button id="saveMovieBtn" class="btn btn-primary">Save</button>
+		</div>
+	</div>
+</body>
+
+</html>

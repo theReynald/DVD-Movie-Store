@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<link rel="stylesheet" type="text/css"
+	th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}" />
+<script src="https://code.jquery.com/jquery-3.4.1.min.js">
+	
+</script>
+<meta charset="ISO-8859-1">
+<title>Movie Application - Login</title>
+
+<script>
+// initializing jquery when the page is loaded
+	$(document).ready(
+			function() {
+				// load the list of movies using ajax API request
+				$.get("/api/movies", function(data, status) {
+					if(status === 'success'){ // when load is successfull, populate the table 
+						$("#moviesTable tbody tr").remove(); // first clear the existing rows. 
+						$.each(data, function(index, item) { // for each record in the returned list, add a row in the table
+							$("#moviesTable").append(
+									"<tr><td>" + item.movieId
+											+ "</td><td>" + item.name
+											+ "</td><td>" + item.category
+											+ "</td><td>" + item.description
+											+ "</td><td>" + item.studioId
+											+ "</td><td>" + item.image
+											+ "</td><td>" + item.price
+											+ "</td><td><a href='/update-movie?id="+item.movieId+"'>Edit</a>" // Edit link
+											+ "</td><td><a href='javascript: deleteMovie("+item.movieId+")'>Delete</a>" // Delete link
+											+ "</td></tr>");
+						});
+					}
+				});
+				
+				// method to delete a movie
+				deleteMovie = function(id) {
+					$.ajax({ // make API delete request to delete the movie. 
+					    url: '/api/movies/'+id,
+					    type: 'DELETE',
+					    success: function(result) {
+					    	alert('movie deleted successfully'); // display alert success message
+					    	window.location.reload(); // reload the page to refresh the list 
+					    }
+					});
+					
+				}
+			});
+</script>
+
+</head>
+<body>
+	<div class="container">
+		<a href="/add-movie" class="btn btn-success">Add Movie</a>
+		<table id="moviesTable" class="table table-striped">
+			<thead>
+			<!--  table header -->
+				<tr>
+					<th>Movie Id</th>
+					<th>Name</th>
+					<th>Category</th>
+					<th>Description</th>
+					<th>Studio</th>
+					<th>Image</th>
+					<th>Price</th>
+				</tr>
+			</thead>
+			<tbody>
+			</tbody>
+		</table>
+	</div>
+</body>
+
+</html>

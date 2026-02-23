@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<link rel="stylesheet" type="text/css"
+	th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}" />
+<script src="https://code.jquery.com/jquery-3.4.1.min.js">
+	
+</script>
+<meta charset="ISO-8859-1">
+<title>Movie Application - Login</title>
+
+<script>
+//initialize jquery on load of this html page
+	$(document).ready(function() {
+		// fetch the movieId from the html text field
+		var movieId = $("#movieId").val();
+		// ajax request to get movie by id
+		$.get("/api/movies/" + movieId, function(data, status) {
+			if (status === 'success') { // on success of ajax call, set the html text fields with values from API response
+				$("#movieName").val(data.name);
+				$("#category").val(data.category);
+				$("#description").val(data.description);
+				$("#studio").val(data.studio);
+				$("#image").val(data.image);
+				$("#price").val(data.price);
+			}
+		});
+
+		// function to handle click of update button
+		$("#updateMovieBtn").click(function() {
+			// get values of each text field in the form
+			var movieId = $("#movieId").val();
+			var movieName = $("#movieName").val();
+			var movieCategory = $("#category").val();
+			var movieDescription = $("#description").val();
+			var movieStudio = $("#studio").val();
+			var movieImage = $("#image").val();
+			var moviePrice = $("#price").val();
+			// prepare a JSON object to send it to the API 
+			var data = {
+				"movieId" : movieId,
+				"name" : movieName,
+				"category" : movieCategory,
+				"description" : movieDescription,
+				"studioId" : movieStudio,
+				"image" : movieImage,
+				"price" : moviePrice
+			};
+
+			// make an ajax PUT request, this will send data to the backend PUT API in movieController
+			$.ajax({
+				type : "PUT",
+				url : "/api/movies",
+				contentType : "application/json",
+				data : JSON.stringify(data),
+				success : function() {
+					alert('movie updated successfully');
+				},
+				error : function(err) {
+					alert('error occurred ' + JSON.stringify(err));
+				}
+			});
+
+		});
+
+	});
+</script>
+
+</head>
+<body>
+	<div class="container">
+		<h1>Update movie</h1>
+		<div>
+			<div class="form-group">
+				<label for="movieId">Movie Id</label> <input type="text"
+					th:value="${movieId}" class="form-control" id="movieId" disabled>
+			</div>
+			<div class="form-group">
+				<label for="movieName">Movie Name</label> <input type="text"
+					class="form-control" id="movieName" required>
+			</div>
+			<div class="form-group">
+				<label for="category">Category</label> <input type="text"
+					class="form-control" id="category" required>
+			</div>
+			<div class="form-group">
+				<label for="description">Description</label> <input type="text"
+					class="form-control" id="description">
+			</div>
+			<div class="form-group">
+				<label for="studio">Studio</label> <input type="text"
+					class="form-control" id="studio">
+			</div>
+			<div class="form-group">
+				<label for="image">Image</label> <input type="text"
+					class="form-control" id="image">
+			</div>
+			<div class="form-group">
+				<label for="price">Price</label> <input type="text"
+					class="form-control" id="price" required>
+			</div>
+			<a id="backBtn" class="btn btn-default" href="/movie-list">Back</a>
+			<button id="updateMovieBtn" class="btn btn-primary">Update</button>
+		</div>
+	</div>
+</body>
+
+</html>

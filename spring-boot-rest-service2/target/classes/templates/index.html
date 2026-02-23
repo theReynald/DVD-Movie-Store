@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<link rel="stylesheet" type="text/css"
+	th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/css/main.css}" />
+<meta charset="ISO-8859-1">
+<title>Movie Application - Login</title>
+</head>
+<body>
+<!--  login page for the application -->
+	<div class="container">
+		<div class="jumbotron">
+			<h1>Movie Application System</h1>
+		</div>
+		<form action="#" th:action="@{/login}" method="post"
+			th:object="${user}">
+			<div class="form-group">
+				<label for="inputEmail">Username</label> <input type="text"
+					th:field="*{username}" class="form-control" id="inputEmail"
+					placeholder="Username">
+			</div>
+			<div class="form-group">
+				<label for="inputPassword">Password</label> <input type="password"
+					th:field="*{password}" class="form-control" id="inputPassword"
+					placeholder="Password">
+			</div>
+			<button type="submit" class="btn btn-primary">Sign in</button>
+		</form>
+	</div>
+</body>
+
+</html>
